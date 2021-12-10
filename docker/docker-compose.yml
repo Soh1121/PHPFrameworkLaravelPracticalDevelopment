@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  web:
+    build: ./web
+    ports:
+      - "8080:80"
+    volumes:
+      - ../src:/var/www/html
+  db:
+    image: mysql:5.7.36
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel_db
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: laravel_pass
+      DB_DATABASE: laravel_db
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - 3306:3306
+
