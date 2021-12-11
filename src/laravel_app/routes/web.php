@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello/{person}', 'HelloController@index');
+Route::get('/hello', 'HelloController@index');
 
 Route::namespace('Sample')->group(function () {
     Route::get('/sample', 'SampleController@index');
