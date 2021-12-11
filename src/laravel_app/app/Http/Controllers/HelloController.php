@@ -35,8 +35,10 @@ class HelloController extends Controller
         return view('hello.index', $data);
     }
 
-    public function other($msg)
+    public function other(Request $request)
     {
-        return Storage::disk('public')->download($this->fname);
+        $ext = '.' . $request->file('file')->extension();
+        Storage::disk('public')->putFileAs('files', $request->file('file'), 'uploaded' . $ext);
+        return redirect()->route('hello');
     }
 }
