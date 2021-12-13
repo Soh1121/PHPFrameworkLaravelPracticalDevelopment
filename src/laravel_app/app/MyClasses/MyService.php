@@ -4,12 +4,15 @@ namespace App\MyClasses;
 
 class MyService
 {
-	private $id = -1;
-	private $msg = 'no id...';
-	private $data = ['Hello', 'Welcome', 'Bye'];
+	private $myservice;
 
-	public function __construct()
+	private function __construct()
 	{
+	}
+
+	public static getInstance()
+	{
+		return self::$myservice ?? self::$myservice = new MyService();
 	}
 
 	public function setId($id)
