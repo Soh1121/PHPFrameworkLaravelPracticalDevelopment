@@ -16,9 +16,10 @@ class HelloController extends Controller
         $msg = 'get: ';
         $result = [];
         DB::table('people')
-            ->chunkById(2, function ($items) use (&$msg, &$result) {
+            ->orderBy('name', 'asc')
+            ->chunk(2, function ($items) use (&$msg, &$result) {
                 foreach ($items as $item) {
-                    $msg .= $item->id . ' ';
+                    $msg .= $item->id . ':' . $item->name . ' ';
                     $result += array_merge($result, [$item]);
                     break;
                 }
