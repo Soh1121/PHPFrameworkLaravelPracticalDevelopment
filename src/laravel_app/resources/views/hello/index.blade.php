@@ -14,6 +14,7 @@
 			padding: 10px;
 		}
 	</style>
+	<link rel="stylesheet" href="/css/app.css">
 </head>
 
 <body>
@@ -25,6 +26,7 @@
 		@endforeach
 	</ol>
 	<hr>
+	{!! $data->links() !!}
 </body>
 
 </html>
