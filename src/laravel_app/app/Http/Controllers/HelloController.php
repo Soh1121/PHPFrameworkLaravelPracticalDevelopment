@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Facades\MyService;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HelloController extends Controller
 {
@@ -11,11 +10,16 @@ class HelloController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index($id)
     {
+        $ids = explode(',', $id);
+        $msg = 'get people.';
+        $result = DB::table('people')
+            ->whereIn('id', $ids)
+            ->get();
         $data = [
-            'msg' => $request->hello,
-            'data' => $request->alldata
+            'msg' => $msg,
+            'data' => $result,
         ];
         return view('hello.index', $data);
     }
