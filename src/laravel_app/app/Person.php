@@ -6,9 +6,12 @@ use Illuminate\Database\Connectors\MySqlConnector;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use PhpParser\Node\Expr\FuncCall;
+use Laravel\Scout\Searchable;
 
 class Person extends Model
 {
+    use Searchable;
+
     protected $guarded = ['id'];
 
     public static $rules = [
@@ -57,6 +60,14 @@ class Person extends Model
         $this->attributes['name'] = $value[0];
         $this->attributes['mail'] = $value[1];
         $this->attributes['age'] = $value[2];
+    }
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+        $array['reverse'] = strrev($array['name']);
+
+        return $array;
     }
 }
 

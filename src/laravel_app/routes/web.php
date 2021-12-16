@@ -18,11 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello', 'HelloController@index')
-    ->middleware('MyMW')->name('hello');
-// Route::get('/hello/{id}', 'HelloController@index')
-// ->middleware('MyMW');
-// Route::get('/hello/{id}/{name}', 'HelloController@save');
-Route::get('/hello/other', 'HelloController@other');
-Route::get('/hello/json', 'HelloController@json');
-Route::get('/hello/json/{id}', 'HelloController@json');
+Route::get('/hello', 'HelloController@index');
+Route::post('/hello', 'HelloController@sed');
