@@ -7,18 +7,27 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Person;
 
 class MyJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct()
+    protected $person;
+
+    public function __construct(Person $person)
     {
-        //
+        $this->person = $person;
     }
 
     public function handle()
     {
-        echo '<p class="myjob">THIS IS MYJOB!</p>';
+        $sufix = ' [+MYJOB]';
+        if (strpos($this->person->name, $sufix)) {
+            $this->person->name = str_replace($sufix, '', $this->person->name);
+        } else {
+            $this->person->name .= $sufix;
+        }
+        $this->person->save();
     }
 }

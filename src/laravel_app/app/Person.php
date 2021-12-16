@@ -6,11 +6,9 @@ use Illuminate\Database\Connectors\MySqlConnector;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use PhpParser\Node\Expr\FuncCall;
-use Laravel\Scout\Searchable;
 
 class Person extends Model
 {
-    use Searchable;
 
     protected $guarded = ['id'];
 
