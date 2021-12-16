@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Person;
 use App\Http\Pagination\MyPaginator;
+use App\Jobs\MyJob;
 
 class HelloController extends Controller
 {
@@ -12,8 +13,9 @@ class HelloController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index()
     {
+        MyJob::dispatch();
         $msg = 'show people record.';
         $result = Person::get();
         $data = [
