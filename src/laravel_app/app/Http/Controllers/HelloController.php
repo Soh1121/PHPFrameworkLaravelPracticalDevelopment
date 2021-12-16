@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Person;
+use App\Http\Pagination\MyPaginator;
 
 class HelloController extends Controller
 {
@@ -10,16 +12,16 @@ class HelloController extends Controller
     {
     }
 
-    public function index($id)
+    public function index(Request $request)
     {
-        $ids = explode(',', $id);
-        $msg = 'get people.';
-        $result = DB::table('people')
-            ->whereIn('id', $ids)
-            ->get();
+        $id = $request->query('page');
+        $msg = 'show page: ' . $id;
+        $result = Person::paginate(2);
+        $paginator = new MyPaginator($result);
         $data = [
             'msg' => $msg,
             'data' => $result,
+            'paginator' => $paginator,
         ];
         return view('hello.index', $data);
     }
