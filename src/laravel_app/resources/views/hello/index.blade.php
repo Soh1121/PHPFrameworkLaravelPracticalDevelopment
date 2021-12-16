@@ -36,15 +36,24 @@
 
 <body>
 	<h1>Hello/Index</h1>
+	<p>{{ $msg }}</p>
 	<div>
-		<input type="number" id="id" value="1">
-		<button onclick="doAction()">Click</button>
+		<form action="/hello" method="post">
+			@csrf
+			<input type="text" name="find" id="find" value="{{ $input }}">
+			<input type="submit">
+		</form>
 	</div>
-	<ul>
-		<li id="name"></li>
-		<li id="mail"></li>
-		<li id="age"></li>
-	</ul>
+	<hr>
+	<table border="1">
+		@foreach($data as $item)
+		<tr>
+			<th>{{ $item->id }}</th>
+			<td>{{ $item->all_data }}</td>
+		</tr>
+		@endforeach
+	</table>
+	<hr>
 </body>
 
 </html>
