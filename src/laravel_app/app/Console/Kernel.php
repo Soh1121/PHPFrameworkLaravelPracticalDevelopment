@@ -18,8 +18,15 @@ class Kernel extends ConsoleKernel
     {
         $count = Person::all()->count();
         $id = rand(0, $count) + 1;
-        $obj = new ScheduleObj($id);
-        $schedule->call($obj);
+
+        /* インスタンス実行
+        $schedule->call(new MyJob($id)); */
+
+        /* ディスパッチする
+        $schedule->call(function() use($id)
+        {
+            MyJob::dispatch($id);
+        }); */
     }
 
     protected function commands()
