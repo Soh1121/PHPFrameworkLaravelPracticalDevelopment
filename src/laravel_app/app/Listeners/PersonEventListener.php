@@ -3,9 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\PersonEvent;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Storage;
 
-class PersonEventListener
+class PersonEventListener implements ShouldQueue
 {
     public function __construct()
     {
