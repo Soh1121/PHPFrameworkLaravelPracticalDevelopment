@@ -40,7 +40,7 @@
 	<div>
 		<form action="/hello" method="post">
 			@csrf
-			<input type="text" name="find" id="find" value="{{ $input }}">
+			ID: <input type="text" name="id" id="id">
 			<input type="submit">
 		</form>
 	</div>

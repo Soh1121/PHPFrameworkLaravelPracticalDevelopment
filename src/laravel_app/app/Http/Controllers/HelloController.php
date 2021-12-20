@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Person;
-use App\Http\Pagination\MyPaginator;
 use App\Jobs\MyJob;
+use Illuminate\Support\Facades\Storage;
 
 class HelloController extends Controller
 {
@@ -13,12 +13,8 @@ class HelloController extends Controller
     {
     }
 
-    public function index(Person $person = null)
+    public function index()
     {
-        if ($person != null) {
-            $qname = $person->id % 2 == 0 ? 'even' : 'odd';
-            MyJob::dispatch($person)->onQueue($qname);
-        }
         $msg = 'show people record.';
         $result = Person::get();
         $data = [
@@ -31,16 +27,16 @@ class HelloController extends Controller
 
     public function send(Request $request)
     {
-        $input = $request->input('find');
-        $msg = 'search: ' . $input;
-        $result = Person::search($input)->get();
+        $id = $request->input('id');
+        $person = Person::find($id);
 
-        $data = [
-            'input' => $input,
-            'msg' => $msg,
-            'data' => $result,
-        ];
-        return view('hello.index', $data);
+        dispatch(function () use ($person) {
+            Storage::append(
+                'person_access_log.txt',
+                $person->all_data
+            );
+        });
+        return redirect()->route('hello');
     }
 
     public function save($id, $name)
