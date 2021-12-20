@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Jobs\MyJob;
+use App\Person;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,7 +26,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('queue:work --stop-wehn-empty');
+        $count = Person::all()->count();
+        $id = rand(0, $count) + 1;
+        $schedule->call(function () use ($id) {
+            $person = Person::find($id);
+            MyJob::dispatch($person);
+        });
     }
 
     /**
