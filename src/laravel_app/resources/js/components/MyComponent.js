@@ -9,14 +9,29 @@ export default class MyComponent extends Component {
 			msg: 'ok',
 		};
 		this.doChange = this.doChange.bind(this);
+		this.doAction = this.doAction.bind(this);
 	}
 
 	doChange(event) {
 		let n = event.target.value;
 		this.setState((state)=>({
 			num: n,
-			msg: 'count: ' + n,
+			person: null,
 		}));
+	}
+	doAction(event) {
+		this.setState((state)=>({
+			msg: 'wait...',
+		}));
+		axios.get('/hello/json/' + this.state.num)
+			.then(response => {
+				let person = response.data;
+				let msg = person.id + ':' + person.name + ' [' + person.mail + '] (' + person.age + ')';
+				this.setState((state)=>({
+					person: person,
+					msg: msg
+				}));
+			});
 	}
 
 	render() {
@@ -25,6 +40,7 @@ export default class MyComponent extends Component {
 				<p>{ this.state.msg }</p>
 				<div>
 					<input type="number" id="num" onChange={this.doChange} />
+					<button onClick={this.doAction}>Click</button>
 				</div>
 			</div>
 		);
