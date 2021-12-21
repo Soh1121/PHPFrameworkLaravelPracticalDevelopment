@@ -3,57 +3,15 @@
 
 <head>
 	<title>Index</title>
-	<style>
-		th {
-			background-color: red;
-			padding: 10px;
-		}
-
-		td {
-			background-color: #eee;
-			padding: 10px;
-		}
-	</style>
-	<link rel="stylesheet" href="/css/app.css">
-	<script>
-		function doAction() {
-			var id = document.querySelector('#id').value;
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', '/hello/json/' + id, true);
-			xhr.responseType = 'json';
-			xhr.onload = function(e) {
-				if (this.status == 200) {
-					var result = this.response;
-					document.querySelector('#name').textContent = result.name;
-					document.querySelector('#mail').textContent = result.mail;
-					document.querySelector('#age').textContent = result.age;
-				}
-			};
-			xhr.send();
-		}
-	</script>
+	<link rel="stylesheet" href="{{ mix('css/app.css') }}" type="text/css">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-<body>
+<body style="padding: 10px;">
 	<h1>Hello/Index</h1>
 	<p>{{ $msg }}</p>
-	<div>
-		<form action="/hello" method="post">
-			@csrf
-			ID: <input type="text" name="id" id="id">
-			<input type="submit">
-		</form>
-	</div>
-	<hr>
-	<table border="1">
-		@foreach($data as $item)
-		<tr>
-			<th>{{ $item->id }}</th>
-			<td>{{ $item->all_data }}</td>
-		</tr>
-		@endforeach
-	</table>
-	<hr>
+	<app-root></app-root>
+	<script src="{{ mix('/js/app.js') }}"></script>
 </body>
 
 </html>

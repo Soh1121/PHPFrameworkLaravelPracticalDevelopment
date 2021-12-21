@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Person;
 use App\Events\PersonEvent;
+use App\MyClasses\PowerMyService;
 
 class HelloController extends Controller
 {
@@ -12,14 +13,10 @@ class HelloController extends Controller
     {
     }
 
-    public function index()
+    public function index(PowerMyService $service)
     {
-        $msg = 'show people record.';
-        $result = Person::get();
         $data = [
-            'input' => '',
-            'msg' => $msg,
-            'data' => $result,
+            'msg' => 'This is Angular application.',
         ];
         return view('hello.index', $data);
     }
