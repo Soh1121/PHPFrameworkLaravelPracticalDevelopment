@@ -11,7 +11,7 @@
 	<h1>Hello/Index</h1>
 	<p>{{ $msg }}</p>
 	<div id="app">
-		<example-component></example-component>
+		<my-component></my-component>
 	</div>
 	<script src="{{ mix('js/app.js') }}"></script>
 </body>
