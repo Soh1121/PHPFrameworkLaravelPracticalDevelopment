@@ -8,9 +8,9 @@ class PeopleTableSeeder extends Seeder
     public function run()
     {
         $param = [
-            'name' => 'taro',
-            'mail' => 'taro@yamada.jp',
-            'age' => 12,
+            'name' => 'YAMADA-TARO',
+            'mail' => 'taro@yamada',
+            'age' => 34,
         ];
         DB::table('people')->insert($param);
 
