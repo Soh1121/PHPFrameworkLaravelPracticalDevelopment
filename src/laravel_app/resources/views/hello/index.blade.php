@@ -10,8 +10,8 @@
 <body style="padding: 10px;">
 	<h1>Hello/Index</h1>
 	<p>{{ $msg }}</p>
-	<div id="mycomponent"></div>
-	<script src="{{ asset('/js/app.js') }}"></script>
+	<app-root></app-root>
+	<script src="{{ mix('/js/app.js') }}"></script>
 </body>
 
 </html>
