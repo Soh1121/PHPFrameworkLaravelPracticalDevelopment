@@ -1950,11 +1950,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/hello/json').then(function (response) {
+      _this.people = response.data;
+      _this.msg = 'get data!';
+    });
+  },
   data: function data() {
     return {
-      msg: 'please your name:',
-      name: ''
+      msg: 'wait...',
+      name: '',
+      people: []
     };
   },
   methods: {
@@ -37604,28 +37618,25 @@ var render = function () {
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.name,
-          expression: "name",
-        },
-      ],
-      attrs: { type: "text" },
-      domProps: { value: _vm.name },
-      on: {
-        input: function ($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.name = $event.target.value
-        },
-      },
-    }),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.doAction } }, [_vm._v("click")]),
+    _c(
+      "ul",
+      _vm._l(_vm.people, function (person, key) {
+        return _c("li", [
+          _vm._v(
+            "\n\t\t\t" +
+              _vm._s(person.id) +
+              ": " +
+              _vm._s(person.name) +
+              " [" +
+              _vm._s(person.mail) +
+              "] (" +
+              _vm._s(person.age) +
+              ")\n\t\t"
+          ),
+        ])
+      }),
+      0
+    ),
   ])
 }
 var staticRenderFns = []
