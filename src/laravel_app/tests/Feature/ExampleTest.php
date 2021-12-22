@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\MyClasses\PowerMyService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
 
 class ExampleTest extends TestCase
 {
@@ -11,12 +13,21 @@ class ExampleTest extends TestCase
 
     public function testBasicTest()
     {
+        $msg = '*** OK ***';
+        $mock = Mockery::mock(PowerMyService::class);
+        $mock->shouldReceive('setId')
+            ->withArgs([1])
+            ->once()
+            ->andReturn(null);
+
+        $mock->shouldReceive('say')
+            ->once()
+            ->andReturn($msg);
+
+        $this->instance(PowerMyService::class, $mock);
+
         $response = $this->get('/hello');
         $content = $response->getContent();
-        echo $content;
-        $response->assertSeeText(
-            'あなたが好きなのは、1番のリンゴですね！',
-            $content
-        );
+        $response->asertSeeText($msg, $content);
     }
 }
