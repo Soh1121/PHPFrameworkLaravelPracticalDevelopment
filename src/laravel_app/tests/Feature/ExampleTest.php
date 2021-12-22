@@ -27,8 +27,14 @@ class ExampleTest extends TestCase
         $this->assertDatabaseHas('people', $data);
 
         Bus::fake();
-        Bus::assertNotDispatched(MyJob::class);
         MyJob::dispatch($id);
-        Bus::assertDispatched(MyJob::class);
+
+        Bus::assertDispatched(
+            MyJob::class,
+            function ($job) use ($id) {
+                $p = Person::find($id)->first();
+                return $job->getPersonId() == $p->id;
+            }
+        );
     }
 }
