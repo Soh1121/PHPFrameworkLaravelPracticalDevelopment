@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Person;
 use App\Events\PersonEvent;
 use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class HelloController extends Controller
 {
@@ -15,18 +16,12 @@ class HelloController extends Controller
 
     public function index($id = -1)
     {
-        if ($id > 0) {
-            $msg = 'id = ' . $id;
-            $result = [Person::find($id)];
-        } else {
-            $msg = 'all people data.';
-            $result = Person::get();
-        }
+        $output = new BufferedOutput;
+        Artisan::call('route:list', [], $output);
+        $msg = $output->fetch();
         $data = [
             'msg' => $msg,
-            'data' => $result,
         ];
-        dump($data);
         return view('hello.index', $data);
     }
 
