@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Person;
 use App\Events\PersonEvent;
-use App\Listeners\PersonEventListener;
 use App\MyClasses\PowerMyService;
 
 class HelloController extends Controller
@@ -14,15 +13,11 @@ class HelloController extends Controller
     {
     }
 
-    public function index($id = null)
+    public function index(PowerMyService $service)
     {
-        if ($id != null) {
-            event(PersonEvent::class);
-            $result = Person::find($id);
-        } else {
-            $result = Person::get();
-        }
-        $msg = 'show people record.';
+        $service->setId(1);
+        $msg = $service->say();
+        $result = Person::get();
         $data = [
             'input' => '',
             'msg' => $msg,
