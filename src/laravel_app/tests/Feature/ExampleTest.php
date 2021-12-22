@@ -2,20 +2,32 @@
 
 namespace Tests\Feature;
 
+use App\MyClasses\PowerMyService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+    use RefreshDatabase;
+
     public function testBasicTest()
     {
-        $response = $this->get('/');
+        $msg = '*** OK ***';
+        $mock = Mockery::mock(PowerMyService::class);
+        $mock->shouldReceive('setId')
+            ->withArgs([1])
+            ->once()
+            ->andReturn(null);
 
-        $response->assertStatus(200);
+        $mock->shouldReceive('say')
+            ->once()
+            ->andReturn($msg);
+
+        $this->instance(PowerMyService::class, $mock);
+
+        $response = $this->get('/hello');
+        $content = $response->getContent();
+        $response->asertSeeText($msg, $content);
     }
 }

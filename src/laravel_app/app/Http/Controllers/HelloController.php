@@ -15,8 +15,13 @@ class HelloController extends Controller
 
     public function index(PowerMyService $service)
     {
+        $service->setId(1);
+        $msg = $service->say();
+        $result = Person::get();
         $data = [
-            'msg' => 'This is Angular application.',
+            'input' => '',
+            'msg' => $msg,
+            'data' => $result,
         ];
         return view('hello.index', $data);
     }

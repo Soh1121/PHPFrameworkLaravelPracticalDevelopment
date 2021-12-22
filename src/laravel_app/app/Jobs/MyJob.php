@@ -23,7 +23,7 @@ class MyJob implements ShouldQueue
 
     public function __construct($id)
     {
-        $this->person = Person::find($id)->first();
+        // $this->person = Person::find($id)->first();
     }
 
     public function __invoke()
