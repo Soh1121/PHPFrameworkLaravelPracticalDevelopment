@@ -8,7 +8,7 @@ use Illuminate\Foundation\Inspiring;
 
 class MyCommand extends Command
 {
-    protected $signature = 'my:cmd {--stones=15} {--max=3}';
+    protected $signature = 'my:cmd';
     protected $description = 'This is my first command!';
 
     public function __construct()
@@ -18,29 +18,17 @@ class MyCommand extends Command
 
     public function handle()
     {
-        $stones = $this->option('stones');
-        $max = $this->option('max');
-        echo "*** start ***\n";
-        while ($stones > 0) {
-            echo ("stones: $stones\n");
-            $ask = $this->ask("you:");
-            $you = (int)$ask;
-            $you = $you > 0 && $you <= $max ? $you : 1;
-            $stones -= $you;
-            echo ("stones: $stones\n");
-            if ($stones <= 0) {
-                echo "you lose...\n";
-                break;
-            }
-            $me = ($stones - 1) % (1 + $max);
-            $me = $me == 0 ? 1 : $me;
-            $stones -= $me;
-            echo "me: $me\n";
-            if ($stones <= 0) {
-                echo "you win!!\n";
-                break;
-            }
+        $choice = ['id', 'name', 'age'];
+        echo "find Person!\n";
+        $field = $this->choice("select field:", $choice, 1);
+        $value = $this->ask('input value:');
+
+        $p = Person::where($field, $value)->first();
+
+        if ($p != null) {
+            echo 'id = ' . $p->id . "\n";
+        } else {
+            echo "can't find Person.";
         }
-        echo "--- end ---\n";
     }
 }
