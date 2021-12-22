@@ -16,3 +16,10 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('person {id}', function () {
+    $id = $this->argument('id');
+    $p = App\Person::find($id);
+    $this->question('id = $id');
+    $this->line($p->all_data());
+});
