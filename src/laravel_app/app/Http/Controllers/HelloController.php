@@ -25,7 +25,7 @@ class HelloController extends Controller
             'msg' => $msg,
             'data' => $result,
         ];
-        // dump($data);
+        dump($data);
         return view('hello.index', $data);
     }
 
