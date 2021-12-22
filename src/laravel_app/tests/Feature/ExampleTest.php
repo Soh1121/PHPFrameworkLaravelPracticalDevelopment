@@ -18,14 +18,8 @@ class ExampleTest extends TestCase
         $person = factory(Person::class)->create();
 
         Event::fake();
-        Event::assertNotDispatched(PersonEvent::class);
-        event(new PersonEvent($person));
+        // $this->get('/hello/' . $person->id)->assertOk();
+        $this->get('/hello')->assertOk();
         Event::assertDispatched(PersonEvent::class);
-        Event::assertDispatched(
-            PersonEvent::class,
-            function ($event) use ($person) {
-                return $event->person === $person;
-            }
-        );
     }
 }
