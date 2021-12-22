@@ -8,7 +8,7 @@ use Illuminate\Foundation\Inspiring;
 
 class MyCommand extends Command
 {
-    protected $signature = 'my:cmd {num?*}';
+    protected $signature = 'my:cmd {--id=?} {--name=?}';
     protected $description = 'This is my first command!';
 
     public function __construct()
@@ -18,11 +18,21 @@ class MyCommand extends Command
 
     public function handle()
     {
-        $arr = $this->arguments();
-        $re = 0;
-        foreach ($arr['num'] as $item) {
-            $re += (int)$item;
+        $id = $this->option('id');
+        $name = $this->option('name');
+        if ($id != '?') {
+            $p = Person::find($id);
+        } else {
+            if ($name != '?') {
+                $p = Person::where('name', $name)->first();
+            } else {
+                $p = null;
+            }
         }
-        echo "total: " . $re;
+        if ($p != null) {
+            echo "Person id = " . $p->id . ":\n" . $p->all_data;
+        } else {
+            echo 'no Person find...';
+        }
     }
 }
