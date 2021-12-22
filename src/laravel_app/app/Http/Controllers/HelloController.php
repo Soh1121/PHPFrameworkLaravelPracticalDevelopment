@@ -16,8 +16,14 @@ class HelloController extends Controller
 
     public function index($id = -1)
     {
+        $opt = [
+            '--method' => 'get',
+            '--path' => 'hello',
+            '--sort' => 'uri',
+            '--compact' => null,
+        ];
         $output = new BufferedOutput;
-        Artisan::call('route:list', [], $output);
+        Artisan::call('route:list', $opt, $output);
         $msg = $output->fetch();
         $data = [
             'msg' => $msg,
