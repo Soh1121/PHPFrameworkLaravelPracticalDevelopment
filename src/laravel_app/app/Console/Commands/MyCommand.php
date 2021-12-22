@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Person;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
 
 class MyCommand extends Command
 {
-    protected $signature = 'my:cmd';
-
+    protected $signature = 'my:cmd {person?}';
     protected $description = 'This is my first command!';
 
     public function __construct()
@@ -18,8 +18,15 @@ class MyCommand extends Command
 
     public function handle()
     {
-        echo "\n*今日の格言*\n\n";
-        echo Inspiring::quote();
-        echo "\n\n";
+        $p = $this->argument('person');
+        if ($p != null) {
+            $person = Person::find($p);
+            if ($person != null) {
+                echo "\nPerson id = " . $p . ":\n";
+                echo $person->all_data . "\n";
+                return;
+            }
+        }
+        echo "can't get Person...";
     }
 }
