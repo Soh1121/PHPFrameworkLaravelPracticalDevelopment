@@ -19,16 +19,17 @@ class MyCommand extends Command
     public function handle()
     {
         $choice = ['id', 'name', 'age'];
-        echo "find Person!\n";
+        $this->question("find Person!");
         $field = $this->choice("select field:", $choice, 1);
         $value = $this->ask('input value:');
 
         $p = Person::where($field, $value)->first();
 
         if ($p != null) {
-            echo 'id = ' . $p->id . "\n";
+            $this->info('id = ' . $p->id);
+            $this->line($p->all_data);
         } else {
-            echo "can't find Person.";
+            $this->error("can't find Person.");
         }
     }
 }
