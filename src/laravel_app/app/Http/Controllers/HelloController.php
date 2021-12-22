@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Person;
 use App\Events\PersonEvent;
-use App\MyClasses\PowerMyService;
 
 class HelloController extends Controller
 {
@@ -13,16 +12,20 @@ class HelloController extends Controller
     {
     }
 
-    public function index(PowerMyService $service)
+    public function index($id = -1)
     {
-        $service->setId(1);
-        $msg = $service->say();
-        $result = Person::get();
+        if ($id > 0) {
+            $msg = 'id = ' . $id;
+            $result = [Person::find($id)];
+        } else {
+            $msg = 'all people data.';
+            $result = Person::get();
+        }
         $data = [
-            'input' => '',
             'msg' => $msg,
             'data' => $result,
         ];
+        dump($data);
         return view('hello.index', $data);
     }
 
