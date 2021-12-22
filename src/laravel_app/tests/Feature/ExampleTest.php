@@ -5,8 +5,11 @@ namespace Tests\Feature;
 use App\Person;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event;
 use App\Events\PersonEvent;
+use App\Jobs\MyJob;
+use Illuminate\Support\Facades\Queue;
+use App\Listeners\PersonEventListener;
+use Illuminate\Events\CallQueuedListener;
 
 class ExampleTest extends TestCase
 {
@@ -17,9 +20,20 @@ class ExampleTest extends TestCase
         factory(Person::class)->create();
         $person = factory(Person::class)->create();
 
-        Event::fake();
-        // $this->get('/hello/' . $person->id)->assertOk();
-        $this->get('/hello')->assertOk();
-        Event::assertDispatched(PersonEvent::class);
+        Queue::fake();
+        Queue::assertNothingPushed();
+
+        MyJob::dispatch($person->id);
+        Queue::assertPushed(MyJob::class);
+
+        event(PersonEvent::class);
+        $this->get('/hello/' . $person->id)->assertOk();
+        Queue::assertPushed(CallQueuedListener::class, 2);
+        Queue::assertPushed(
+            CallQueuedListener::class,
+            function ($job) {
+                return $job->class == PersonEventListener::class;
+            }
+        );
     }
 }
