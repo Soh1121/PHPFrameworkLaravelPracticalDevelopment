@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Person;
 use App\Events\PersonEvent;
+use Illuminate\Support\Facades\Artisan;
 
 class HelloController extends Controller
 {
@@ -67,5 +68,12 @@ class HelloController extends Controller
         } else {
             return Person::find($id)->toJson();
         }
+    }
+
+    public function clear()
+    {
+        Artisan::call('cache:clear');
+        Artisan::call('event:clear');
+        return redirect()->route('hello');
     }
 }
