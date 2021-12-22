@@ -3,11 +3,10 @@
 namespace Tests\Feature;
 
 use App\Person;
-use DatabaseSeeder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Bus;
-use App\Jobs\MyJob;
+use Illuminate\Support\Facades\Event;
+use App\Events\PersonEvent;
 
 class ExampleTest extends TestCase
 {
@@ -15,25 +14,17 @@ class ExampleTest extends TestCase
 
     public function testBasicTest()
     {
-        $id = 1;
-        $data = [
-            'id' => $id,
-            'name' => 'DUMMY',
-            'mail' => 'dummy@mail',
-            'age' => 0,
-        ];
-        $person = new Person();
-        $person->fill($data)->save();
-        $this->assertDatabaseHas('people', $data);
+        factory(Person::class)->create();
+        $person = factory(Person::class)->create();
 
-        Bus::fake();
-        MyJob::dispatch($id);
-
-        Bus::assertDispatched(
-            MyJob::class,
-            function ($job) use ($id) {
-                $p = Person::find($id)->first();
-                return $job->getPersonId() == $p->id;
+        Event::fake();
+        Event::assertNotDispatched(PersonEvent::class);
+        event(new PersonEvent($person));
+        Event::assertDispatched(PersonEvent::class);
+        Event::assertDispatched(
+            PersonEvent::class,
+            function ($event) use ($person) {
+                return $event->person === $person;
             }
         );
     }
