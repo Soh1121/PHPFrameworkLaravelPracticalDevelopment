@@ -8,7 +8,7 @@ use Illuminate\Foundation\Inspiring;
 
 class MyCommand extends Command
 {
-    protected $signature = 'my:cmd {--id=?} {--name=?}';
+    protected $signature = 'my:cmd {--stones=15} {--max=3}';
     protected $description = 'This is my first command!';
 
     public function __construct()
@@ -18,21 +18,29 @@ class MyCommand extends Command
 
     public function handle()
     {
-        $id = $this->option('id');
-        $name = $this->option('name');
-        if ($id != '?') {
-            $p = Person::find($id);
-        } else {
-            if ($name != '?') {
-                $p = Person::where('name', $name)->first();
-            } else {
-                $p = null;
+        $stones = $this->option('stones');
+        $max = $this->option('max');
+        echo "*** start ***\n";
+        while ($stones > 0) {
+            echo ("stones: $stones\n");
+            $ask = $this->ask("you:");
+            $you = (int)$ask;
+            $you = $you > 0 && $you <= $max ? $you : 1;
+            $stones -= $you;
+            echo ("stones: $stones\n");
+            if ($stones <= 0) {
+                echo "you lose...\n";
+                break;
+            }
+            $me = ($stones - 1) % (1 + $max);
+            $me = $me == 0 ? 1 : $me;
+            $stones -= $me;
+            echo "me: $me\n";
+            if ($stones <= 0) {
+                echo "you win!!\n";
+                break;
             }
         }
-        if ($p != null) {
-            echo "Person id = " . $p->id . ":\n" . $p->all_data;
-        } else {
-            echo 'no Person find...';
-        }
+        echo "--- end ---\n";
     }
 }
